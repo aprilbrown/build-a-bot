@@ -1,5 +1,5 @@
 <template>
-    <div class="content">
+    <div v-if="availableParts" class="content">
         <div class="preview">
             <CollapsibleSection>
                 <div class="preview-content">
@@ -24,27 +24,27 @@
             <!--          <span v-if="selectedRobot.head.onSale" class="sale">Sale!</span>-->
             <!--        </div>-->
             <PartSelector
-                :parts="avaliableParts.heads"
+                :parts="availableParts.heads"
                 position="top"
                 @partSelected="part => selectedRobot.head=part"/>
         </div>
         <div class="middle-row">
             <PartSelector
-                :parts="avaliableParts.arms"
+                :parts="availableParts.arms"
                 position="left"
                 @partSelected="part => selectedRobot.leftArm=part"/>
             <PartSelector
-                :parts="avaliableParts.torsos"
+                :parts="availableParts.torsos"
                 position="center"
                 @partSelected="part => selectedRobot.torso=part"/>
             <PartSelector
-                :parts="avaliableParts.arms"
+                :parts="availableParts.arms"
                 position="right"
                 @partSelected="part => selectedRobot.rightArm=part"/>
         </div>
         <div class="bottom-row">
             <PartSelector
-                :parts="avaliableParts.bases"
+                :parts="availableParts.bases"
                 position="bottom"
                 @partSelected="part => selectedRobot.base=part"/>
         </div>
@@ -52,12 +52,14 @@
 </template>
 
 <script>
-import avaliableParts from '../data/parts';
 import PartSelector from './PartSelector.vue';
 import CollapsibleSection from '../shared/CollapsibleSection.vue';
 
 export default {
     name: 'RobotBuilder',
+    created() {
+        this.$store.dispatch('getParts');
+    },
     beforeRouteLeave(to, from, next) {
         if (this.addedToCart) {
             next(true);
@@ -74,7 +76,6 @@ export default {
     },
     data() {
         return {
-            avaliableParts,
             addedToCart: false,
             cart: [],
             selectedRobot: {
@@ -87,6 +88,9 @@ export default {
         };
     },
     computed: {
+        availableParts() {
+            return this.$store.state.parts;
+        },
         saleBorderClass() {
             return this.selectedRobot.head.onSale ? 'sale-border' : '';
         },

@@ -13,6 +13,7 @@ module.exports = {
         indent: ['error', 4],
         'vue/html-indent': ['error', 4],
         'vue/script-indent': ['error', 4],
+        'no-param-reassign': 0,
     },
     parserOptions: {
         parser: 'babel-eslint',
