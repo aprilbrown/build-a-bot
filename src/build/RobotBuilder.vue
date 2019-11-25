@@ -52,13 +52,14 @@
 </template>
 
 <script>
+import { mapActions } from 'vuex';
 import PartSelector from './PartSelector.vue';
 import CollapsibleSection from '../shared/CollapsibleSection.vue';
 
 export default {
     name: 'RobotBuilder',
     created() {
-        this.$store.dispatch('getParts');
+        this.getParts();
     },
     beforeRouteLeave(to, from, next) {
         if (this.addedToCart) {
@@ -89,13 +90,14 @@ export default {
     },
     computed: {
         availableParts() {
-            return this.$store.state.parts;
+            return this.$store.state.robots.parts;
         },
         saleBorderClass() {
             return this.selectedRobot.head.onSale ? 'sale-border' : '';
         },
     },
     methods: {
+        ...mapActions('robots', ['getParts', 'addRobotToCart']),
         addToCart() {
             const robot = this.selectedRobot;
             const cost = robot.head.cost
@@ -103,7 +105,8 @@ export default {
                 + robot.torso.cost
                 + robot.rightArm.cost
                 + robot.base.cost;
-            this.$store.commit('addRobotToCart', Object.assign({}, robot, { cost }));
+            this.addRobotToCart(Object.assign({}, robot, { cost }))
+                .then(() => this.$router.push('/cart'));
             this.addedToCart = true;
         },
     },
