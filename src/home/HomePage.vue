@@ -1,29 +1,30 @@
 <template>
-  <div class="home">
-    <div>
-      <img class="robot" src="../assets/robot-home.png" aria-hidden="true"/>
+    <div class="home">
+        <div>
+            <img class="robot" src="../assets/robot-home.png" aria-hidden="true"/>
+        </div>
+        <div class="get-started">
+            <router-link to="/build">Get Started</router-link>
+            building your first robot!
+        </div>
     </div>
-    <div class="get-started">
-      <a href="">Get Started</a> building your first robot!
-    </div>
-  </div>
 </template>
 
 <script>
 export default {
-  name: 'HomePage',
-  props: {
-    msg: String,
-  },
+    name: 'HomePage',
+    props: {
+        msg: String,
+    },
 };
 </script>
 
 <style scoped>
-  .home {
-    text-align: center;
-  }
+    .home {
+        text-align: center;
+    }
 
-  .robot {
-    height: 300px;
-  }
+    .robot {
+        height: 300px;
+    }
 </style>
